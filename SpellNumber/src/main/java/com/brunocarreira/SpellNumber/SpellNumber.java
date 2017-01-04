@@ -1,5 +1,4 @@
 package com.brunocarreira.SpellNumber;
-import java.util.Scanner;
 
 /**
 * Write a number between 0 and 1 billion into words.
@@ -7,14 +6,17 @@ import java.util.Scanner;
 **/
 public class SpellNumber {
 
-	private static final String[] lessTwenty = {
+	private static final String[] LESS_TWENTY = {
 	   "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
 	   "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
 
-	private static final String[] tens = {
+	private static final String[] TENS = {
 	   "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
 
-	private static final String[] high = {"thousand", "million", "billion"};
+	private static final String[] HIGH = {"thousand", "million", "billion"};
+	private static final int LIMIT = 1000000000;
+	private static final String ERROR_LIMIT = "Write a number between 0 and 1 billion";
+	private static final String HUNDRED_TEXT = " hundred";
 
 	/**
 	* Write a number between 0 and 1 billion into words.
@@ -22,8 +24,9 @@ public class SpellNumber {
 	* @author Bruno Carreira
 	**/
 	public String spellItOut(int number) {
-		if (number > 1000000000)
-			return "Write a number between 0 and 1 billion";
+		// Business Requirement
+		if (number > LIMIT)
+			return ERROR_LIMIT;
 		if (number < 1000) {
 			return spellHundreds(number); }
 	   StringBuilder sbResult = new StringBuilder();
@@ -33,7 +36,7 @@ public class SpellNumber {
 		  if (hundreds != 0) {
 		     StringBuilder sbHundreds = new StringBuilder(spellHundreds(hundreds));
 		     if (thousandIndex > 0)
-		    	 sbHundreds.append(" ").append(high[thousandIndex-1]);
+		    	 sbHundreds.append(" ").append(HIGH[thousandIndex-1]);
 		     if (sbResult.length()==0)
 		    	 sbResult.append(sbHundreds);
 		      else
@@ -49,7 +52,7 @@ public class SpellNumber {
 	private String spellHundreds(int number) {
 		int hundred = (number/100);
 		int tens = (number%100);
-	   StringBuilder sbHundred = new StringBuilder(lessTwenty[hundred]).append(" hundred");
+	   StringBuilder sbHundred = new StringBuilder(LESS_TWENTY[hundred]).append(HUNDRED_TEXT);
 	   String sTens = spellTens(tens);
 	   if (hundred==0)
 	      return sTens;
@@ -62,31 +65,13 @@ public class SpellNumber {
 	// Write tens part (0 - 99).
 	private String spellTens (int number) {
 	   if (number < 20)
-	      return lessTwenty[number];
-	   StringBuilder sb = new StringBuilder(tens[(number/10) - 2]);
+	      return LESS_TWENTY[number];
+	   StringBuilder sb = new StringBuilder(TENS[(number/10) - 2]);
 	   if ((number%10) == 0)
 	      return sb.toString();
-	   return sb.append("-").append(lessTwenty[number%10]).toString(); 
+	   return sb.append("-").append(LESS_TWENTY[number%10]).toString(); 
 	}
 	
-    // Main method with a console to request the number
-	public static void main(String[] args) {
-		SpellNumber spellNumber= new SpellNumber();
-		Scanner scanner = new Scanner(System.in);
-		int n = 0;
-		while(n!=-1){
-			System.out.println("Give me a number ");
-			if (scanner.hasNextInt()){
-				n = scanner.nextInt();
-				System.out.println(spellNumber.spellItOut(n));
-			}
-			else{ 
-				System.out.println("Invalid number!");
-				scanner.next();
-			}
-			
-		}
-		scanner.close();
-	}
+
 
 }
