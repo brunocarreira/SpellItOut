@@ -5,7 +5,7 @@ It is a program which given a whole number between 0 and 1 billion; writes it ou
 1049875: one million forty-nine thousand eight hundred seventy-five
 
 # Instructions
-Run the java class SpellNumber.java
+Run the maven command: mvn test exec:java -Dexec.mainClass="com.brunocarreira.SpellNumber.App"
 
 Write the input for the question:
 Give me a number?
